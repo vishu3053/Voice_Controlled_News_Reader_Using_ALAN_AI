@@ -21,5 +21,17 @@ const API_Key = '4faadf186f9041b3aaad120ee2e70fa5';
 
 // Creating an API Endpoint for News by Source 
 intent('Give me the news from $(source* (.*))', (p) => {
-    p.play()
+    let NEWS_API_URL = 'https://newsapi.org/v2/top-headlines?apiKey=${API_KEY}';
+    
+    // BBC News -> given as input
+    // bbc-news -> required input for API
+    if(p.source.value) {
+        NEWS_API_URL = `${NEWS_API_URL}&sources=${p.source.value.toLowerCase().split(" ").join('-')}`
+    }
+    
+    // In ALAN, we have inbuilt functionalities for making API Call
+    // we can actual data using body argument of callback function
+    api.request(NEWS_API_URL, (error, response, body) => {
+        const {articles} = JSON.parse(body);
+    })
 });
